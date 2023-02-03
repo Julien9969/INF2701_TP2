@@ -87,9 +87,9 @@ public:
 
 
         // afficher le satellite
-        //if (geosynchrone) {
+        if (Etat::orbiteGeosynchrone) {
             mtc.Rotate(angle * 4, 0.0, 1.0, 0.0);
-        //}
+        }
         mtc.Translate(3.5, 0.0, 0.0);
         mtc.Scale(0.3, 0.3, 0.3);
         mtc.Rotate(90, 0, 1, 0);
