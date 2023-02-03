@@ -216,6 +216,7 @@ public:
         glUseProgram(prog);
         // TODO: ...
 
+
         // afficher des triangles en plein ou en fil de fer ?
         glPolygonMode(GL_FRONT_AND_BACK, Etat::modePolygone);
         // ne pas afficher les triangles dont on voit la face arrière ? (touche 'c')
@@ -245,23 +246,25 @@ public:
         glEnable(GL_CULL_FACE); glCullFace(GL_BACK); // ne pas afficher les faces arrière
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         
+        glEnable(GL_STENCIL_TEST);
         // partie 1: modifs ici ...
         // ...
-        //glStencilOp( GLenum sfail, GLenum zfail, GLenum pass );
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        //afficherParoiZpos(); // paroi en +Z
+        glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
 
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        //afficherParoiXpos(); // paroi en +X
+        glStencilFunc(GL_NEVER, 1, 1);
+        afficherParoiZpos(); // paroi en +Z
 
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        //afficherParoiZneg(); // paroi en -Z
+        glStencilFunc(GL_NEVER, 2, 2);
+        afficherParoiXpos(); // paroi en +X
+        
+        glStencilFunc(GL_NEVER, 4, 4);
+        afficherParoiZneg(); // paroi en -Z
+        
+        glStencilFunc(GL_NEVER, 8, 8);
+        afficherParoiXneg(); // paroi en -X
 
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        //afficherParoiXneg(); // paroi en -X
-
-        // void glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        //afficherParoiYneg(); // paroi en -Y
+        glStencilFunc( GL_NEVER, 16, 16);
+        afficherParoiYneg(); // paroi en -Y
 
         glDisable(GL_CULL_FACE);
 
@@ -278,18 +281,32 @@ public:
         glUniform1i(locmonochromacite, Etat::monochromacite);
 
         //glStencilOp( GLenum sfail, GLenum zfail, GLenum pass );
+        glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+        
+        //glDisable(GL_STENCIL_TEST);
 
         // partie 1: modifs ici ...
         // [ au besoin, utiliser : if ( Etat::debug ) glStencilFunc( GL_ALWAYS, 1, 1 ); // pour débogguer ]
         // on trace le contenu de chaque lentille 5 fois
         //glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        // ...
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
-        // ...
-        // etc.
+        glStencilFunc(GL_EQUAL, 1, 1);
+        afficherContenu();
 
-        
-        glUseProgram(progBase);
+        glStencilFunc(GL_EQUAL, 2, 2);
+        afficherContenu();
+
+        glStencilFunc(GL_EQUAL, 4, 4);
+        afficherContenu();
+
+        glStencilFunc(GL_EQUAL, 8, 8);
+        afficherContenu();
+
+        glStencilFunc(GL_EQUAL, 16, 16);
+        afficherContenu();
+
+        glDisable(GL_STENCIL_TEST);
+        // glUseProgram(progBase);
+
         // afficher les parois du trou de ver
         afficherParois();
 
