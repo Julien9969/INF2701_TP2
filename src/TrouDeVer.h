@@ -194,10 +194,13 @@ public:
 
     void positionnerCamera(int exoplaneteChoisie)
     {
-        // partie 2: modifs ici ...
-        //Exoplanete *exoplanete = exoplanetes[exoplaneteChoisie-1];
-        //MatricePipeline mtc = ...
-        //matrVisu.setMatr( ... );
+         //partie 2: modifs ici ...
+        Exoplanete *exoplanete = exoplanetes[exoplaneteChoisie-1];
+        MatricePipeline mtc = exoplanete->obtenirMatriceCourante();
+        matrVisu.setMatr( glm::inverse(glm::mat4(mtc)) );
+        //matrVisu.LookAt();
+
+        
     }
 
     void afficherToutesLesExoplanetes()
@@ -229,7 +232,7 @@ public:
         if (Etat::culling) glDisable(GL_CULL_FACE);
     }
 
-    void afficher()
+    void afficher(int exoplaneteChoisie)
     {
         // tracer le trou de ver avec le programme de nuanceur de base
         glUseProgram(progBase);
@@ -311,7 +314,8 @@ public:
         afficherParois();
 
         // lorsqu'on a passer dans le trou de ver, nous voyons l'ensemble des planètes
-        //if (exoplaneteChoisie)  ...
+        if (exoplaneteChoisie != 0)
+            afficherContenu();
 
     }
     
