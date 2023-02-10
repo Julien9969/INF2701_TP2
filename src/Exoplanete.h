@@ -86,14 +86,16 @@ public:
         mtc.Scale(taille, taille, taille);
 
 
-        // afficher le satellite
         if (Etat::orbiteGeosynchrone) {
             mtc.Rotate(angle * 4, 0.0, 1.0, 0.0);
         }
-        mtc.Translate(3.5, 0.0, 0.0);
+        mtc.Translate(5.5, 1.0, 0.0);
+
+
+        // afficher le satellite
+
         mtc.Scale(0.3, 0.3, 0.3);
         mtc.Rotate(90, 0, 1, 0);
-        mtc.Translate(0.0, 1, 0.0);
         
         // std::cout << "//@Exoplanete, obtenirMatriceCourante;" << " determinant=" << glm::determinant( glm::mat4(m) ) << std::endl;
         return mtc;
