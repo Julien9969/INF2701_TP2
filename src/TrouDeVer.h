@@ -198,9 +198,6 @@ public:
         Exoplanete *exoplanete = exoplanetes[exoplaneteChoisie-1];
         MatricePipeline mtc = exoplanete->obtenirMatriceCourante();
         matrVisu.setMatr( glm::inverse(glm::mat4(mtc)) );
-        //matrVisu.LookAt();
-
-        
     }
 
     void afficherToutesLesExoplanetes()
@@ -217,7 +214,9 @@ public:
     void afficherContenu(GLenum ordre = GL_CCW)
     {
         glUseProgram(prog);
-        // TODO: ...
+        glUniformMatrix4fv(locmatrProj, 1, GL_FALSE, matrProj);
+        glUniformMatrix4fv(locmatrVisu, 1, GL_FALSE, matrVisu);
+        glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
 
 
         // afficher des triangles en plein ou en fil de fer ?
@@ -283,15 +282,12 @@ public:
         glUniform1i(locillumination, Etat::illumination);
         glUniform1i(locmonochromacite, Etat::monochromacite);
 
-        //glStencilOp( GLenum sfail, GLenum zfail, GLenum pass );
         glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-        
         //glDisable(GL_STENCIL_TEST);
-
+        // 
         // partie 1: modifs ici ...
         // [ au besoin, utiliser : if ( Etat::debug ) glStencilFunc( GL_ALWAYS, 1, 1 ); // pour débogguer ]
         // on trace le contenu de chaque lentille 5 fois
-        //glStencilFunc( GLenum func, GLint ref, GLuint mask );
         glStencilFunc(GL_EQUAL, 1, 1);
         afficherContenu();
 
@@ -308,14 +304,16 @@ public:
         afficherContenu();
 
         glDisable(GL_STENCIL_TEST);
-        // glUseProgram(progBase);
+        glUseProgram(progBase);
 
         // afficher les parois du trou de ver
         afficherParois();
 
         // lorsqu'on a passer dans le trou de ver, nous voyons l'ensemble des planètes
+
         if (exoplaneteChoisie != 0)
             afficherContenu();
+
 
     }
     
