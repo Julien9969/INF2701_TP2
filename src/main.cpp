@@ -232,9 +232,11 @@ void FenetreTP::afficherScene( )
 
     // afficher le trou de ver
     //if (Etat::exoplaneteChoisie) {
-    trouDeVer->afficher();
-    // else
-    // afficherSoleil...
+    trouDeVer->afficher(Etat::exoplaneteChoisie);
+    //else {
+    //    afficherSoleil()
+    //}
+
     
     // permuter tampons avant et arrière
     swap();

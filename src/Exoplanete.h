@@ -70,16 +70,26 @@ public:
     {
         MatricePipeline mtc;
         // amener le repère à la position courante de cette planete
-        //mtc.  ...
+        mtc.LoadIdentity();
+        mtc.Rotate(angle, 0.0, 1.0, 0.0);
+        mtc.Translate(rayon, hauteur, 0);
+        mtc.Scale(taille, taille, taille);
 
-        // Utiliser ou non la rotation geosynchrone
-        //if (geosynchrone) mtc. ... 
+        if (Etat::orbiteGeosynchrone) {
+            mtc.Rotate(angle*4, 0.0, 1.0, 0.0); 
+        }
 
         // se positionner en marge de la planete (à +5.5 par rapport à la base), tout en ajustant selon la taille de cette planete
         // (le satellite est à 3.5 unités de la planète donc 5.5 donne une bonne vue du satellite et la planète
-        //mtc.Translate( ... )
+        mtc.Translate(5.5, 1.0, 0.0);
+        mtc.Scale(0.3, 0.3, 0.3); 
+        mtc.Rotate(90, 0 , 1 , 0); 
+
+         
+
+
         
-        // std::cout << "//@Exoplanete, obtenirMatriceCourante;" << " determinant=" << glm::determinant( glm::mat4(m) ) << std::endl;
+        std::cout << "//@Exoplanete, obtenirMatriceCourante;" << " determinant=" << glm::determinant( glm::mat4(mtc) ) << std::endl;
         return mtc;
     }
 
