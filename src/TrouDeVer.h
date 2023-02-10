@@ -199,8 +199,6 @@ public:
         MatricePipeline mtc = exoplanete->obtenirMatriceCourante();
         matrVisu.setMatr( glm::inverse(glm::mat4(mtc)) );
         //matrVisu.LookAt();
-
-        
     }
 
     void afficherToutesLesExoplanetes()
@@ -218,6 +216,13 @@ public:
     {
         glUseProgram(prog);
         // TODO: ...
+        glUniformMatrix4fv(locmatrProj, 1, GL_FALSE, matrProj);
+        glUniformMatrix4fv(locmatrVisu, 1, GL_FALSE, matrVisu);
+        glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+        //glUniformMatrix4fv(indLightSource, 1, GL_FALSE, LightSource);
+
+        /*GLuint indFrontMaterial = -1;
+        GLuint indLightModel = -1;*/
 
 
         // afficher des triangles en plein ou en fil de fer ?

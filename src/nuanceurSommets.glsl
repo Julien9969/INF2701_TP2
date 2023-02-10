@@ -16,6 +16,7 @@ void main( void )
     // transformation standard du sommet
     gl_Position = matrProj * matrVisu * matrModel * Vertex;
 
+    
     // couleur du sommet
     AttribsOut.couleur = Color;
 }
