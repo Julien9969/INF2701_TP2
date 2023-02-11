@@ -48,8 +48,8 @@ void main()
             
             AttribsOut.couleur = AttribsIn[i + j].couleur;
             AttribsOut.normale = Normal;
-            AttribsOut.lumiDir = vec3( 0, 0, 1 );  
-            AttribsOut.obsVec = vec3( 0, 0, 1 );
+            AttribsOut.lumiDir = vec3( 0, 0, 1);  
+            AttribsOut.obsVec = vec3( 0, 0, -1 );
 
             EmitVertex();
         }

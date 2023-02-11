@@ -85,7 +85,7 @@ public:
         mtc.Scale(0.3, 0.3, 0.3); 
         mtc.Rotate(90, 0 , 1 , 0);
         
-        std::cout << "//@Exoplanete, obtenirMatriceCourante;" << " determinant=" << glm::determinant( glm::mat4(mtc) ) << std::endl;
+        // std::cout << "//@Exoplanete, obtenirMatriceCourante;" << " determinant=" << glm::determinant( glm::mat4(mtc) ) << std::endl;
         return mtc;
     }
 

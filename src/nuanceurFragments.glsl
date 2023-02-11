@@ -83,19 +83,18 @@ void main( void )
 {
     //vec3 N = normalize( gl_FrontFacing ? AttribsIn.normale : -AttribsIn.normale );
     
-    vec3 L = normalize( AttribsIn.lumiDir ); // vecteur vers la source lumineuse
+    vec3 L = normalize( -AttribsIn.lumiDir ); // vecteur vers la source lumineuse
     vec3 N = normalize( AttribsIn.normale ); // vecteur normal
     vec3 O = normalize( AttribsIn.obsVec );  // position de l'observateur
-
+    
     // calcul de la composante ambiante du modèle
-    vec4 coul = FrontMaterial.emission + FrontMaterial.ambient * LightModel.ambient;
+    vec4 coul = (FrontMaterial.emission + FrontMaterial.ambient * LightModel.ambient);
     // calculer la réflexion
-    coul += AttribsIn.couleur;
-    coul += calculerReflexion( L, N, O );
-
+    coul += AttribsIn.couleur * calculerReflexion( L, N, O );
+    
     // seuiller chaque composante entre 0 et 1 et assigner la couleur finale du fragment
     FragColor = clamp( coul, 0.0, 1.0 );
-
+    
     // Pour « voir » les normales, on peut remplacer la couleur du fragment par la normale.
     // (Les composantes de la normale variant entre -1 et +1, il faut
     // toutefois les convertir en une couleur entre 0 et +1 en faisant (N+1)/2.)
@@ -104,10 +103,13 @@ void main( void )
     
     // la couleur du fragment est la couleur interpolée
     // FragColor = AttribsIn.couleur;
-
+    
     // Mettre un test bidon afin que l'optimisation du compilateur n'élimine les variable "illumination"
     // et "monochromacite".
     // Vous ENLEVEREZ ce test inutile!
     if ( illumination > 10000 ) FragColor.r += 0.001;
     if ( monochromacite > 10000 ) FragColor.r += 0.001;
+
+
+    
 }
