@@ -183,7 +183,7 @@ public:
         afficherParoiZneg(); // paroi en -Z
 
         glVertexAttrib4f(locColorBase, 0.7, 0.7, 0.7, 0.15); // gris pâle, plus opaque
-        afficherParoiYpos(); // paroi en -Y
+        afficherParoiYpos(); // paroi en +Y
 
         glVertexAttrib4f(locColorBase, 0.4, 0.4, 0.4, 0.15); // gris foncé, plus opaque
         afficherParoiYneg(); // paroi en -Y
@@ -214,9 +214,13 @@ public:
     void afficherContenu(GLenum ordre = GL_CCW)
     {
         glUseProgram(prog);
+        //TODO
         glUniformMatrix4fv(locmatrProj, 1, GL_FALSE, matrProj);
         glUniformMatrix4fv(locmatrVisu, 1, GL_FALSE, matrVisu);
         glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
+
+        //glUniform1i(locillumination, Etat::illumination);
+        //glUniform1i(locmonochromacite, Etat::monochromacite); //?
 
 
         // afficher des triangles en plein ou en fil de fer ?
