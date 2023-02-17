@@ -219,9 +219,6 @@ public:
         glUniformMatrix4fv(locmatrVisu, 1, GL_FALSE, matrVisu);
         glUniformMatrix4fv(locmatrModel, 1, GL_FALSE, matrModel);
 
-        //glUniform1i(locillumination, Etat::illumination);
-        //glUniform1i(locmonochromacite, Etat::monochromacite); //?
-
 
         // afficher des triangles en plein ou en fil de fer ?
         glPolygonMode(GL_FRONT_AND_BACK, Etat::modePolygone);

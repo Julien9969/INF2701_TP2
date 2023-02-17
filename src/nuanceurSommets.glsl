@@ -7,8 +7,6 @@ uniform mat4 matrProj;
 layout(location=0) in vec4 Vertex;
 layout(location=3) in vec4 Color;
 
-//layout(location=2) in vec3 Normal;
-
 
 out Attribs {
     vec4 couleur;

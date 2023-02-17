@@ -48,15 +48,12 @@ in Attribs {
 
 out vec4 FragColor;
 
-float attenuation = 1.0;
+float attenuation = 1.0 ;
 vec4 calculerReflexion( in vec3 L, in vec3 N, in vec3 O )
 {
     vec4 coul = vec4(0);
-
-    // calculer la composante ambiante pour la source de lumière
     coul += FrontMaterial.ambient * LightSource.ambient;
 
-    // calculer l'éclairage seulement si le produit scalaire est positif
     float NdotL = max( 0.0, dot( N, L ) );
     if ( NdotL > 0.0 )
     {
@@ -64,8 +61,8 @@ vec4 calculerReflexion( in vec3 L, in vec3 N, in vec3 O )
         
         float spec = dot( reflect( -L, N ), O ); // dot( R, O )
         
-        // if ( spec > 0 ) 
-        coul += FrontMaterial.specular * LightSource.specular * pow( spec, FrontMaterial.shininess );
+        if ( spec > 0 ) 
+            coul += FrontMaterial.specular * LightSource.specular * pow( spec, FrontMaterial.shininess );
 
     }
 
@@ -78,21 +75,11 @@ void main( void )
     vec3 N = normalize( gl_FrontFacing ? AttribsIn.normale : -AttribsIn.normale );
     
     vec3 L = normalize( AttribsIn.lumiDir ); // vecteur vers la source lumineuse
-    //vec3 N = normalize( AttribsIn.normale ); // vecteur normal
     vec3 O = normalize( AttribsIn.obsVec );  // position de l'observateur
     
-    // calcul de la composante ambiante du modèle
     vec4 coul = (FrontMaterial.emission + FrontMaterial.ambient * LightModel.ambient);
-    // calculer la réflexion
     coul += AttribsIn.couleur * calculerReflexion( L, N, O );
-    
 
-    
-    
-
-    // Mettre un test bidon afin que l'optimisation du compilateur n'élimine les variable "illumination"
-    // et "monochromacite".
-    // Vous ENLEVEREZ ce test inutile!
         if ( illumination >= 1 ) {
             // seuiller chaque composante entre 0 et 1 et assigner la couleur finale du fragment
             FragColor = clamp( coul, 0.0, 1.0 );
@@ -102,10 +89,9 @@ void main( void )
         }
 
     if ( monochromacite >= 1 ) {
-        // FragColor.y = 0.229 * FragColor.r + FragColor.g * 0,587 + FragColor.b * 0.114;
-        float yuv = 0.229 * FragColor.r + FragColor.g * 0.587 + FragColor.b * 0.114;
-        FragColor.r = yuv;
-        FragColor.g = yuv;
-        FragColor.b = yuv;
+        float y = 0.229 * FragColor.r + FragColor.g * 0.587 + FragColor.b * 0.114;
+        FragColor.r = y;
+        FragColor.g = y;
+        FragColor.b = y;
     }
 }
