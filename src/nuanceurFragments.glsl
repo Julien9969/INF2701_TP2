@@ -40,8 +40,6 @@ layout (std140) uniform LightModelParameters
 uniform int illumination; // on veut calculer l'illumination ?
 uniform int monochromacite; // on appliquer la monochromacite ?
 
-// const bool utiliseBlinn = true;
-
 in Attribs {
     vec4 couleur;
     vec3 lumiDir;
@@ -62,17 +60,13 @@ vec4 calculerReflexion( in vec3 L, in vec3 N, in vec3 O )
     float NdotL = max( 0.0, dot( N, L ) );
     if ( NdotL > 0.0 )
     {
-        // calculer la composante diffuse
         coul += attenuation * FrontMaterial.diffuse * LightSource.diffuse * NdotL;
-
-        // calculer la composante spéculaire (Blinn ou Phong : spec = BdotN ou RdotO )
-        //float spec = ( utiliseBlinn ?
-        //               dot( normalize( L + O ), N ) : // dot( B, N )
-        //               dot( reflect( -L, N ), O ) ); // dot( R, O )
         
         float spec = dot( reflect( -L, N ), O ); // dot( R, O )
+        
+        // if ( spec > 0 ) 
+        coul += FrontMaterial.specular * LightSource.specular * pow( spec, FrontMaterial.shininess );
 
-        if ( spec > 0 ) coul += attenuation * FrontMaterial.specular * LightSource.specular * pow( spec, FrontMaterial.shininess );
     }
 
     return( coul );
@@ -81,10 +75,10 @@ vec4 calculerReflexion( in vec3 L, in vec3 N, in vec3 O )
 
 void main( void )
 {
-    //vec3 N = normalize( gl_FrontFacing ? AttribsIn.normale : -AttribsIn.normale );
+    vec3 N = normalize( gl_FrontFacing ? AttribsIn.normale : -AttribsIn.normale );
     
-    vec3 L = normalize( -AttribsIn.lumiDir ); // vecteur vers la source lumineuse
-    vec3 N = normalize( AttribsIn.normale ); // vecteur normal
+    vec3 L = normalize( AttribsIn.lumiDir ); // vecteur vers la source lumineuse
+    //vec3 N = normalize( AttribsIn.normale ); // vecteur normal
     vec3 O = normalize( AttribsIn.obsVec );  // position de l'observateur
     
     // calcul de la composante ambiante du modèle
@@ -92,23 +86,25 @@ void main( void )
     // calculer la réflexion
     coul += AttribsIn.couleur * calculerReflexion( L, N, O );
     
-    // seuiller chaque composante entre 0 et 1 et assigner la couleur finale du fragment
-    FragColor = clamp( coul, 0.0, 1.0 );
-    
-    // Pour « voir » les normales, on peut remplacer la couleur du fragment par la normale.
-    // (Les composantes de la normale variant entre -1 et +1, il faut
-    // toutefois les convertir en une couleur entre 0 et +1 en faisant (N+1)/2.)
-    // if ( afficheNormales ) FragColor = clamp( vec4( (N+1)/2, 1 ), 0.0, 1.0 );
+
     
     
-    // la couleur du fragment est la couleur interpolée
-    // FragColor = AttribsIn.couleur;
-    
+
     // Mettre un test bidon afin que l'optimisation du compilateur n'élimine les variable "illumination"
     // et "monochromacite".
     // Vous ENLEVEREZ ce test inutile!
-    if ( illumination > 10000 ) FragColor.r += 0.001;
-    if ( monochromacite > 10000 ) FragColor.r += 0.001;
+        if ( illumination >= 1 ) {
+            // seuiller chaque composante entre 0 et 1 et assigner la couleur finale du fragment
+            FragColor = clamp( coul, 0.0, 1.0 );
+        }
+        else {
+            FragColor = AttribsIn.couleur;
+        }
+
+    if ( monochromacite >= 1 ) {
+        FragColor.r += 1;
+    }
+    
 
 
     

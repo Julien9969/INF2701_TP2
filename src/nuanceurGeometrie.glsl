@@ -20,7 +20,7 @@ in Attribs {
 
 void main()
 {
-    //Itération 3 par 3 ?
+    //Itï¿½ration 3 par 3 ?
     //for ( int i = 0 ; i < gl_in.length() ; ++i )
     //{
     //    vec3 arete1 = vec3(gl_in[1].gl_Position - gl_in[0].gl_Position);
@@ -35,8 +35,6 @@ void main()
     //}
     //EndPrimitive();
 
-
-
     for (int i = 0; i < gl_in.length() / 3; i += 3) {
     
         vec3 arete1 = vec3(gl_in[1 + i].gl_Position - gl_in[0 + i].gl_Position);
@@ -49,7 +47,7 @@ void main()
             AttribsOut.couleur = AttribsIn[i + j].couleur;
             AttribsOut.normale = Normal;
             AttribsOut.lumiDir = vec3( 0, 0, 1);  
-            AttribsOut.obsVec = vec3( 0, 0, -1 );
+            AttribsOut.obsVec = vec3( 0, 0, 1 );
 
             EmitVertex();
         }
