@@ -102,10 +102,10 @@ void main( void )
         }
 
     if ( monochromacite >= 1 ) {
-        FragColor.r += 1;
+        // FragColor.y = 0.229 * FragColor.r + FragColor.g * 0,587 + FragColor.b * 0.114;
+        float yuv = 0.229 * FragColor.r + FragColor.g * 0.587 + FragColor.b * 0.114;
+        FragColor.r = yuv;
+        FragColor.g = yuv;
+        FragColor.b = yuv;
     }
-    
-
-
-    
 }
